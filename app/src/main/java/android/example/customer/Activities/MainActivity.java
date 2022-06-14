@@ -11,13 +11,12 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        finish();
-
-
-
+        setContentView(R.layout.activity_main);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.myToolBar);
+        setSupportActionBar(myToolbar);
     }
 }
+
