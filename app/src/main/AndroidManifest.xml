@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Customer">
-        <activity android:name=".Activities.OrderAccepted"></activity>
+        <activity android:name=".Activities.SplashScreenActivity"></activity>
+        <activity android:name=".Activities.OrderAccepted" />
         <activity android:name=".Activities.ConfirmOrderActivity" />
         <activity android:name=".Activities.SelectOrderActivity" />
         <activity android:name=".Activities.HomePageActivity" />
@@ -34,15 +35,18 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Activities.MainActivity"
-            android:label="@string/title_activity_home_page" />
-        <activity android:name=".Activities.PhoneNumberActivity">
+            android:name=".Acti"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Activities.MainActivity"
+            android:label="@string/title_activity_home_page" />
+        <activity android:name=".Activities.PhoneNumberActivity" />
     </application>
 
 </manifest>

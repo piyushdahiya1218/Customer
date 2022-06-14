@@ -1,33 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.PhoneNumberActivity">
+    android:orientation="vertical"
+    tools:context=".Activities.PhoneNumberActivity"
+    tools:ignore="HardcodedText">
+
+
+    <include layout="@layout/appbar" />
+
+    <EditText
+        android:id="@+id/firstName"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/edit_text_border"
+        android:hint="  First Name"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/lastName"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/edit_text_border"
+        android:hint="  Last Name"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/phonenumber"
-        android:layout_width="250dp"
-        android:textAlignment="center"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="176dp"
-        android:hint="Enter your phone number"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:background="@drawable/edit_text_border"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="  Phone Number"
         android:inputType="number"
+        android:maxLength="10"
         android:maxLines="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/submitbutton"
-        android:layout_width="wrap_content"
+        />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Submit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phonenumber" />
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/submitbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/green"
+            android:text="PROCEED"
+            android:textColor="@android:color/white"
+            tools:ignore="ButtonStyle" />
+
+    </LinearLayout>
+</LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    tools:context=".Activities.PhoneNumberActivity">-->
+
+<!--    <include layout="@layout/appbar" />-->
+
+
+<!--    <EditText-->
+<!--        android:id="@+id/phonenumber"-->
+<!--        android:layout_width="296dp"-->
+<!--        android:layout_height="43dp"-->
+<!--        android:layout_marginTop="176dp"-->
+<!--        android:background="@drawable/edit_text_border"-->
+<!--        android:hint="Enter your phone number"-->
+<!--        android:inputType="number"-->
+<!--        android:maxLength="10"-->
+<!--        android:maxLines="1"-->
+<!--        android:textAlignment="center"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.03" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/submitbutton"-->
+<!--        android:layout_width="179dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:backgroundTint="@color/green"-->
+<!--        android:text="Submit"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/phonenumber"-->
+<!--        app:layout_constraintVertical_bias="0.076" />-->
+
+
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->

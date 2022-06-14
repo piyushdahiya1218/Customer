@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.MainActivity">
-
+<include
+    layout="@layout/appbar"
+/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
