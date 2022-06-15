@@ -12,6 +12,8 @@ import android.example.customer.Classes.CustomerCart;
 import android.example.customer.Classes.Product;
 import android.example.customer.Classes.RequestFrom;
 import android.example.customer.R;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -25,6 +27,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -136,6 +140,13 @@ public class ConfirmOrderActivity extends FragmentActivity implements OnMapReady
     @Override
     public void onMapReady(@NonNull GoogleMap map) {
 
+        int height=100;
+        int width=100;
+        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.vendoricon);
+        Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+        BitmapDescriptor smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker);
+
+
         //for customer
         reference=database.getReference("customerlocation").child(customerphonenumber);
         reference.addValueEventListener(new ValueEventListener() {
@@ -163,7 +174,7 @@ public class ConfirmOrderActivity extends FragmentActivity implements OnMapReady
                                 double vendorlongitude=snapshot.child("longitude").getValue(Double.class);
                                 LatLng vendorlatlng=new LatLng(vendorlatitude,vendorlongitude);
                                 if(vendorfirsttime){
-                                    vendormarker=map.addMarker(new MarkerOptions().position(vendorlatlng).title(businessname));
+                                    vendormarker=map.addMarker(new MarkerOptions().position(vendorlatlng).title(businessname).icon(smallMarkerIcon));
                                     vendorfirsttime=false;
                                 }
                                 else{

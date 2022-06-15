@@ -14,6 +14,8 @@ import android.content.pm.PackageManager;
 import android.example.customer.Adapters.CustomInfoWindowAdapter;
 import android.example.customer.Classes.CustomerLocation;
 import android.example.customer.R;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -36,6 +38,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -561,6 +565,12 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
                                             Log.i("businessname",businessname);
                                             Marker marker=map.addMarker(new MarkerOptions().position(vendorcurrentlocation).title(businessname).snippet(snippet));
                                             marker.setTag(vendorlocation.getKey());
+                                            int height=100;
+                                            int width=100;
+                                            Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.vendoricon);
+                                            Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+                                            BitmapDescriptor smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker);
+                                            marker.setIcon(smallMarkerIcon);
                                             vendormarkers.put(vendorlocation.getKey(),marker);
                                         }
                                     }
