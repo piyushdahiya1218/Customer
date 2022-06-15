@@ -106,6 +106,9 @@ public class ConfirmOrderActivity extends FragmentActivity implements OnMapReady
                             if(snapshot.child("accepted").getValue(String.class).equals("1")){
                                 Toast.makeText(ConfirmOrderActivity.this, "accepted", Toast.LENGTH_SHORT).show();
                                 Intent intent=new Intent(getApplicationContext(),OrderAccepted.class);
+                                intent.putExtra("customerphonenumber",customerphonenumber);
+                                intent.putExtra("businessname",businessname);
+                                intent.putExtra("vendorphonenumber",vendorphonenumber);
                                 startActivity(intent);
                                 RequestFrom requestFrom=new RequestFrom("-1","-1");
                                 DatabaseReference newreference=database.getReference("vendorrequests").child(vendorphonenumber);
