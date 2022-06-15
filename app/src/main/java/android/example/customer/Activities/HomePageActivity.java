@@ -123,20 +123,20 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
 
         //****MAP STUFF ENDS HERE****
 
-        linearLayout=findViewById(R.id.buttonslinearlayout);
-        LinearLayout linearLayouttwo = findViewById(R.id.buttonslinearlayouttwo);
-        EditText searchedittext=findViewById(R.id.search);
-        Button searchbutton=findViewById(R.id.searchbutton);
-
-        searchbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String searchquery=searchedittext.getText().toString();
-                if(!searchquery.equals("")){
-                    filterbuttons(searchquery);
-                }
-            }
-        });
+//        linearLayout=findViewById(R.id.buttonslinearlayout);
+//        LinearLayout linearLayouttwo = findViewById(R.id.buttonslinearlayouttwo);
+//        EditText searchedittext=findViewById(R.id.search);
+//        Button searchbutton=findViewById(R.id.searchbutton);
+//
+//        searchbutton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String searchquery=searchedittext.getText().toString();
+//                if(!searchquery.equals("")){
+//                    filterbuttons(searchquery);
+//                }
+//            }
+//        });
 
         Button allbutton=findViewById(R.id.all);
         allbutton.setOnClickListener(new View.OnClickListener() {
