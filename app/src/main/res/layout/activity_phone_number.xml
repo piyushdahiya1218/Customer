@@ -1,137 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightGreen"
+    android:background="@color/white"
     android:baselineAligned="true"
-    android:orientation="vertical"
+    android:contentDescription="vendor"
     tools:context=".Activities.PhoneNumberActivity"
     tools:ignore="HardcodedText">
 
-
-    <!--    <include layout="@layout/appbar" />-->
-
-    <!--    <EditText-->
-    <!--        android:id="@+id/phonenumber"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="34dp"-->
-    <!--        android:background="@drawable/edit_text_border"-->
-    <!--        android:layout_marginStart="16dp"-->
-    <!--        android:layout_marginTop="16dp"-->
-    <!--        android:layout_marginEnd="16dp"-->
-    <!--        android:hint="  Phone Number"-->
-    <!--        android:inputType="number"-->
-    <!--        android:maxLength="10"-->
-    <!--        android:maxLines="1"-->
-
-    <!--        />-->
-
-
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="8dp"-->
-    <!--        android:gravity="center"-->
-    <!--        android:orientation="horizontal">-->
-
-
-    <!--        <Button-->
-    <!--            android:id="@+id/submitbutton"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginEnd="16dp"-->
-    <!--            android:backgroundTint="@color/green"-->
-    <!--            android:text="PROCEED"-->
-    <!--            android:textColor="@android:color/white"-->
-    <!--            tools:ignore="ButtonStyle" />-->
-
-    <!--    </LinearLayout>-->
-
-    <LinearLayout
+    <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="584dp"
+        android:layout_height="0dp"
         android:background="@color/lightGreen"
-        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/view2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="RediPay"
+        android:textColor="@color/bgBlue"
+        android:textSize="32sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintStart_toEndOf="@+id/view"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        >
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="164dp"
+        android:contentDescription="venfor"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view2"
+        app:srcCompat="@drawable/vendor" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="411dp"
+        android:layout_height="204dp"
+        android:background="@color/bgBlue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="414dp"
+        android:layout_height="196dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/textView5"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:alpha="23"
-            android:fontFamily="casual"
-            android:lineSpacingExtra="16sp"
-            android:text="RediPay"
-            android:textAlignment="center"
-            android:textColor="#377836"
-            android:textSize="48sp"
-            android:textStyle="bold|italic"
-            android:typeface="sans"
-            tools:text="RediPay" />
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:scaleType="center"
-            app:srcCompat="@drawable/vendor" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@color/white"
-        android:foregroundGravity="bottom"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/editTextTextPersonName2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:ems="10"
-            android:fontFamily="sans-serif-light"
-            android:inputType="textPersonName"
-            android:paddingLeft="18dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:text="Get started with RediPay"
+            android:textColor="@color/white"
             android:textSize="19sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/phonenumber"
             android:layout_width="match_parent"
-            android:layout_height="47dp"
-
-            android:hint="Enter your mobile number"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/lightGreen"
+            android:ems="10"
+            android:hint="Enter you phone number"
             android:inputType="phone"
-            android:textSize="17sp"
-            android:maxLines="1"
             android:maxLength="10"
-            android:paddingLeft="18dp" />
+            android:textColor="@color/white"
+            android:textColorHint="#68FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
+        <Button
+            android:id="@+id/submitbutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="36dp"
+            android:layout_marginBottom="36dp"
+            android:backgroundTint="@color/lightGreen"
+            android:text="Submit"
+            android:textColor="@color/bgBlue"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phonenumber"
+            app:rippleColor="@color/bgBlue" />
 
-            <Button
-                android:layout_gravity="center"
-                android:id="@+id/submitbutton"
-                android:layout_width="179dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="@color/green"
-                android:text="Submit"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/phonenumber"
-                app:layout_constraintVertical_bias="0.076" />
-    </LinearLayout>
-</LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
