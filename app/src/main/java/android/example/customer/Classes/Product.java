@@ -5,8 +5,19 @@ public class Product {
     String productnameeng, productnamehindi;
     int imageRid;
     boolean selected;
+    String producttype;
 
     public Product() {
+    }
+
+    public Product(String productnameeng, String productnamehindi, int imageRid, int price, int quantity, boolean selected, String producttype) {
+        this.price = price;
+        this.quantity = quantity;
+        this.productnameeng = productnameeng;
+        this.productnamehindi = productnamehindi;
+        this.imageRid = imageRid;
+        this.selected = selected;
+        this.producttype = producttype;
     }
 
     public Product(String productnameeng, String productnamehindi, int imageRid, boolean selected) {
@@ -81,4 +92,11 @@ public class Product {
         this.selected = selected;
     }
 
+    public String getProducttype() {
+        return producttype;
+    }
+
+    public void setProducttype(String producttype) {
+        this.producttype = producttype;
+    }
 }
