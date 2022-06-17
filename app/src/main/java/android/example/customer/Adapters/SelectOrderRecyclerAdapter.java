@@ -63,7 +63,7 @@ public class SelectOrderRecyclerAdapter extends RecyclerView.Adapter<SelectOrder
     @Override
     public SelectOrderRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemview= LayoutInflater.from(parent.getContext()).inflate(R.layout.select_order_list_items,parent,false);
-        return new MyViewHolder(itemview);
+        return new SelectOrderRecyclerAdapter.MyViewHolder(itemview);
     }
 
     @Override

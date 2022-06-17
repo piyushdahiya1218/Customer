@@ -5,14 +5,20 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.example.customer.Adapters.AllProductsRecyclerAdapter;
 import android.example.customer.Adapters.CustomInfoWindowAdapter;
+import android.example.customer.Adapters.SelectOrderRecyclerAdapter;
 import android.example.customer.Classes.CustomerLocation;
+import android.example.customer.Classes.Product;
 import android.example.customer.R;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -52,6 +58,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -78,6 +86,8 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
     String businessname=null;
     String snippet="";
     LinearLayout linearLayout;
+    private RecyclerView recyclerView;
+    ArrayList<Product> allproductslist=new ArrayList<>();
 
 
 
@@ -142,10 +152,22 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
 //            }
 //        });
 
+        //for vendor marker icon
+        int height=100;
+        int width=100;
+        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.vendoricon);
+        Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+        BitmapDescriptor smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker);
+
+        //when all button is clicked
         Button allbutton=findViewById(R.id.all);
         allbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //for list
+                setAdapter(allproductslist);
+
+                //for map
                 vendorconstraint="all";
                 map.clear();
                 vendormarkers.clear();
@@ -208,7 +230,7 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
                                                 else{
                                                     Log.i("key: "+vendorlocation.getKey(), "snippet: "+snippet);
                                                     Log.i("Oncreate() all businessname",businessname);
-                                                    Marker marker=map.addMarker(new MarkerOptions().position(vendorcurrentlocation).title(businessname).snippet(snippet));
+                                                    Marker marker=map.addMarker(new MarkerOptions().position(vendorcurrentlocation).title(businessname).snippet(snippet).icon(smallMarkerIcon));
                                                     vendormarkers.put(vendorlocation.getKey(),marker);
                                                 }
                                             }
@@ -232,11 +254,21 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
             }
         });
 
-
         Button fruitsbutton=findViewById(R.id.fruits);
         fruitsbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //for list
+                ArrayList<Product> fruitslist=new ArrayList<>();
+                for(int i=0;i<allproductslist.size();i++){
+                    if(allproductslist.get(i).getProducttype().equals("fruits")){
+                        Product product=allproductslist.get(i);
+                        fruitslist.add(product);
+                    }
+                }
+                setAdapter(fruitslist);
+
+                //for map
                 vendorconstraint="fruits";
                 map.clear();
                 vendormarkers.clear();
@@ -316,7 +348,7 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
                                                             else{
                                                                 Log.i("key: "+vendorlocation.getKey(), "snippet: "+snippet);
                                                                 Log.i("Oncreate() fruits businessname",businessname);
-                                                                Marker marker=map.addMarker(new MarkerOptions().position(vendorcurrentlocation).title(businessname).snippet(snippet));
+                                                                Marker marker=map.addMarker(new MarkerOptions().position(vendorcurrentlocation).title(businessname).snippet(snippet).icon(smallMarkerIcon));
                                                                 vendormarkers.put(vendorlocation.getKey(),marker);
                                                             }
                                                         }
@@ -355,6 +387,17 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
         vegetablesbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //for list
+                ArrayList<Product> vegetableslist=new ArrayList<>();
+                for(int i=0;i<allproductslist.size();i++){
+                    if(allproductslist.get(i).getProducttype().equals("vegetables")){
+                        Product product=allproductslist.get(i);
+                        vegetableslist.add(product);
+                    }
+                }
+                setAdapter(vegetableslist);
+
+                //for map
                 vendorconstraint="vegetables";
                 map.clear();
                 vendormarkers.clear();
@@ -369,7 +412,7 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
                 }
 
 
-                //to get phonenumbers of all the fruit vendors
+                //to get phonenumbers of all the vegetable vendors
                 database=FirebaseDatabase.getInstance();
                 reference=database.getReference("vendor");
                 reference.addValueEventListener(new ValueEventListener() {
@@ -434,7 +477,7 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
                                                             else{
                                                                 Log.i("key: "+vendorlocation.getKey(), "snippet: "+snippet);
                                                                 Log.i("Oncreate() vegies businessname",businessname);
-                                                                Marker marker=map.addMarker(new MarkerOptions().position(vendorcurrentlocation).title(businessname).snippet(snippet));
+                                                                Marker marker=map.addMarker(new MarkerOptions().position(vendorcurrentlocation).title(businessname).snippet(snippet).icon(smallMarkerIcon));
                                                                 vendormarkers.put(vendorlocation.getKey(),marker);
                                                             }
                                                         }
@@ -466,6 +509,35 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
 
             }
         });
+
+        //populate all products list
+        recyclerView=findViewById(R.id.allproductsrecyclerview);
+        setallproductslist();
+        setAdapter(allproductslist);
+    }
+
+    private void setAdapter(ArrayList<Product> list) {
+        AllProductsRecyclerAdapter adapter=new AllProductsRecyclerAdapter(list);
+        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void setallproductslist() {
+        allproductslist.add(new Product("Grapes","अंगूर",getResources().getIdentifier("grapes","drawable",getPackageName()),10,1,false,"fruits"));
+        allproductslist.add(new Product("Apple","सेब",getResources().getIdentifier("apple","drawable",getPackageName()),10,1,false,"fruits"));
+        allproductslist.add(new Product("Orange","संतरा",getResources().getIdentifier("orange","drawable",getPackageName()),10,1,false,"fruits"));
+        allproductslist.add(new Product("Banana","केला",getResources().getIdentifier("banana","drawable",getPackageName()),10,1,false,"fruits"));
+        allproductslist.add(new Product("Cherry","चेरी",getResources().getIdentifier("cherry","drawable",getPackageName()),10,1,false,"fruits"));
+        allproductslist.add(new Product("Watermelon","तरबूज",getResources().getIdentifier("watermelon","drawable",getPackageName()),10,1,false,"fruits"));
+
+        allproductslist.add(new Product("Beans","फलियां",getResources().getIdentifier("beans","drawable",getPackageName()),10,1,false,"vegetables"));
+        allproductslist.add(new Product("Cabbage","पत्ता गोभी",getResources().getIdentifier("cabbage","drawable",getPackageName()),10,1,false,"vegetables"));
+        allproductslist.add(new Product("Carrot","गाजर",getResources().getIdentifier("carrot","drawable",getPackageName()),10,1,false,"vegetables"));
+        allproductslist.add(new Product("Cauliflower","फूलगोभी",getResources().getIdentifier("cauliflower","drawable",getPackageName()),10,1,false,"vegetables"));
+        allproductslist.add(new Product("Ladyfinger","भिन्डी",getResources().getIdentifier("ladyfinger","drawable",getPackageName()),10,1,false,"vegetables"));
+        allproductslist.add(new Product("Spinach","पालक",getResources().getIdentifier("spinach","drawable",getPackageName()),10,1,false,"vegetables"));
     }
 
     private void filterbuttons(String searchquery) {
