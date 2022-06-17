@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:baselineAligned="true"
+    android:baselineAligned="false"
     android:contentDescription="vendor"
     tools:context=".Activities.PhoneNumberActivity"
     tools:ignore="HardcodedText">
@@ -37,16 +37,16 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="164dp"
         android:contentDescription="venfor"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/view2"
         app:layout_constraintStart_toEndOf="@+id/view2"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
         app:srcCompat="@drawable/vendor" />
 
     <View
         android:id="@+id/view2"
-        android:layout_width="411dp"
+        android:layout_width="match_parent"
         android:layout_height="204dp"
         android:background="@color/bgBlue"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -54,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="414dp"
+        android:layout_width="match_parent"
         android:layout_height="196dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
