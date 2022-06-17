@@ -84,6 +84,7 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
     HashSet<String> vendors =new HashSet<>();
     String vendorconstraint="all";
     String businessname=null;
+    Boolean active;
     String snippet="";
     LinearLayout linearLayout;
     private RecyclerView recyclerView;
@@ -180,7 +181,6 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
                     map.addMarker(new MarkerOptions().position(currentstaticlatlng).title("My Location"));
                 }
 
-
                 reference=database.getReference("vendorlocation");
                 reference.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -200,6 +200,7 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             businessname=snapshot.child("businessname").getValue().toString();
+                                            active=snapshot.child("active").getValue(Boolean.class);
                                         }
 
                                         @Override
@@ -214,25 +215,59 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             if(vendorconstraint.equals("all")){
-                                                snippet="";
-                                                for(DataSnapshot product : snapshot.getChildren()){
-                                                    if(product!=null){
-                                                        snippet=snippet+product.child("productnameeng").getValue().toString()+" (Price: Rs."+product.child("price").getValue().toString()+", Quantity: "+product.child("quantity").getValue().toString()+"kg)"+"\n";
+                                                if(active){
+                                                    snippet="";
+                                                    for(DataSnapshot product : snapshot.getChildren()){
+                                                        if(product!=null){
+                                                            snippet=snippet+product.child("productnameeng").getValue().toString()+" (Price: Rs."+product.child("price").getValue().toString()+", Quantity: "+product.child("quantity").getValue().toString()+"kg)"+"\n";
+                                                        }
+                                                    }
+                                                    //for updating existing markers
+                                                    if(vendormarkers.containsKey(vendorlocation.getKey())){
+                                                        Marker marker=vendormarkers.get(vendorlocation.getKey());
+                                                        marker.setSnippet(snippet);
+                                                        marker.setPosition(vendorcurrentlocation);
+                                                    }
+                                                    //for new markers
+                                                    else{
+                                                        Log.i("key: "+vendorlocation.getKey(), "snippet: "+snippet);
+                                                        Log.i("Oncreate() all businessname",businessname);
+                                                        Marker marker=map.addMarker(new MarkerOptions().position(vendorcurrentlocation).title(businessname).snippet(snippet).icon(smallMarkerIcon));
+                                                        vendormarkers.put(vendorlocation.getKey(),marker);
                                                     }
                                                 }
-                                                //for updating existing markers
-                                                if(vendormarkers.containsKey(vendorlocation.getKey())){
-                                                    Marker marker=vendormarkers.get(vendorlocation.getKey());
-                                                    marker.setSnippet(snippet);
-                                                    marker.setPosition(vendorcurrentlocation);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
+                                    //listening to visibility changes
+                                    reference=database.getReference("vendor");
+                                    reference.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if(snapshot.exists()){
+                                                for(DataSnapshot vendor : snapshot.getChildren()){
+                                                    if(vendor!=null){
+                                                        Boolean active=vendor.child("active").getValue(Boolean.class);
+                                                        Marker marker=vendormarkers.get(vendor.getKey());
+                                                        if(marker!=null){
+                                                            //when inactive
+                                                            if(active!=null && !active){
+                                                                marker.setVisible(false);
+                                                            }
+                                                            //when active
+                                                            else{
+                                                                marker.setVisible(true);
+                                                            }
+                                                        }
+                                                    }
                                                 }
-                                                //for new markers
-                                                else{
-                                                    Log.i("key: "+vendorlocation.getKey(), "snippet: "+snippet);
-                                                    Log.i("Oncreate() all businessname",businessname);
-                                                    Marker marker=map.addMarker(new MarkerOptions().position(vendorcurrentlocation).title(businessname).snippet(snippet).icon(smallMarkerIcon));
-                                                    vendormarkers.put(vendorlocation.getKey(),marker);
-                                                }
+
                                             }
                                         }
 
@@ -282,7 +317,6 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
                     map.addMarker(new MarkerOptions().position(currentstaticlatlng).title("My Location"));
                 }
 
-
                 //to get phonenumbers of all the fruit vendors
                 database=FirebaseDatabase.getInstance();
                 reference=database.getReference("vendor");
@@ -318,6 +352,7 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
                                                     @Override
                                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                         businessname=snapshot.child("businessname").getValue().toString();
+                                                        active=snapshot.child("active").getValue(Boolean.class);
                                                     }
 
                                                     @Override
@@ -332,24 +367,27 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
                                                     @Override
                                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                         if(vendorconstraint.equals("fruits")){
-                                                            snippet="";
-                                                            for(DataSnapshot product : snapshot.getChildren()){
-                                                                if(product!=null){
-                                                                    snippet=snippet+product.child("productnameeng").getValue().toString()+" (Price: Rs."+product.child("price").getValue().toString()+", Quantity: "+product.child("quantity").getValue().toString()+"kg)"+"\n";
+                                                            if(active){
+                                                                snippet="";
+                                                                for(DataSnapshot product : snapshot.getChildren()){
+                                                                    if(product!=null){
+                                                                        snippet=snippet+product.child("productnameeng").getValue().toString()+" (Price: Rs."+product.child("price").getValue().toString()+", Quantity: "+product.child("quantity").getValue().toString()+"kg)"+"\n";
+                                                                    }
                                                                 }
-                                                            }
-                                                            //for updating existing markers
-                                                            if(vendormarkers.containsKey(vendorlocation.getKey())){
-                                                                Marker marker=vendormarkers.get(vendorlocation.getKey());
-                                                                marker.setSnippet(snippet);
-                                                                marker.setPosition(vendorcurrentlocation);
-                                                            }
-                                                            //for new markers
-                                                            else{
-                                                                Log.i("key: "+vendorlocation.getKey(), "snippet: "+snippet);
-                                                                Log.i("Oncreate() fruits businessname",businessname);
-                                                                Marker marker=map.addMarker(new MarkerOptions().position(vendorcurrentlocation).title(businessname).snippet(snippet).icon(smallMarkerIcon));
-                                                                vendormarkers.put(vendorlocation.getKey(),marker);
+                                                                //for updating existing markers
+                                                                if(vendormarkers.containsKey(vendorlocation.getKey())){
+                                                                    Marker marker=vendormarkers.get(vendorlocation.getKey());
+                                                                    marker.setSnippet(snippet);
+                                                                    marker.setPosition(vendorcurrentlocation);
+                                                                }
+                                                                //for new markers
+                                                                else{
+                                                                    Log.i("key: "+vendorlocation.getKey(), "snippet: "+snippet);
+                                                                    Log.i("Oncreate() fruits businessname",businessname);
+                                                                    Marker marker=map.addMarker(new MarkerOptions().position(vendorcurrentlocation).title(businessname).snippet(snippet).icon(smallMarkerIcon));
+                                                                    vendormarkers.put(vendorlocation.getKey(),marker);
+                                                                }
+
                                                             }
                                                         }
                                                     }
@@ -359,6 +397,39 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
 
                                                     }
                                                 });
+
+                                                //listening to visibility changes
+                                                reference=database.getReference("vendor");
+                                                reference.addValueEventListener(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        if(snapshot.exists()){
+                                                            for(DataSnapshot vendor : snapshot.getChildren()){
+                                                                if(vendor!=null){
+                                                                    Boolean active=vendor.child("active").getValue(Boolean.class);
+                                                                    Marker marker=vendormarkers.get(vendor.getKey());
+                                                                    if(marker!=null){
+                                                                        //when inactive
+                                                                        if(active!=null && !active){
+                                                                            marker.setVisible(false);
+                                                                        }
+                                                                        //when active
+                                                                        else{
+                                                                            marker.setVisible(true);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                    }
+                                                });
+
                                             }
                                         }
                                     }
@@ -447,6 +518,7 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
                                                     @Override
                                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                         businessname=snapshot.child("businessname").getValue().toString();
+                                                        active=snapshot.child("active").getValue(Boolean.class);
                                                     }
 
                                                     @Override
@@ -461,24 +533,27 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
                                                     @Override
                                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                         if(vendorconstraint.equals("vegetables")){
-                                                            snippet="";
-                                                            for(DataSnapshot product : snapshot.getChildren()){
-                                                                if(product!=null){
-                                                                    snippet=snippet+product.child("productnameeng").getValue().toString()+" (Price: Rs."+product.child("price").getValue().toString()+", Quantity: "+product.child("quantity").getValue().toString()+"kg)"+"\n";
+                                                            if(active){
+                                                                snippet="";
+                                                                for(DataSnapshot product : snapshot.getChildren()){
+                                                                    if(product!=null){
+                                                                        snippet=snippet+product.child("productnameeng").getValue().toString()+" (Price: Rs."+product.child("price").getValue().toString()+", Quantity: "+product.child("quantity").getValue().toString()+"kg)"+"\n";
+                                                                    }
                                                                 }
-                                                            }
-                                                            //for updating existing markers
-                                                            if(vendormarkers.containsKey(vendorlocation.getKey())){
-                                                                Marker marker=vendormarkers.get(vendorlocation.getKey());
-                                                                marker.setSnippet(snippet);
-                                                                marker.setPosition(vendorcurrentlocation);
-                                                            }
-                                                            //for new markers
-                                                            else{
-                                                                Log.i("key: "+vendorlocation.getKey(), "snippet: "+snippet);
-                                                                Log.i("Oncreate() vegies businessname",businessname);
-                                                                Marker marker=map.addMarker(new MarkerOptions().position(vendorcurrentlocation).title(businessname).snippet(snippet).icon(smallMarkerIcon));
-                                                                vendormarkers.put(vendorlocation.getKey(),marker);
+                                                                //for updating existing markers
+                                                                if(vendormarkers.containsKey(vendorlocation.getKey())){
+                                                                    Marker marker=vendormarkers.get(vendorlocation.getKey());
+                                                                    marker.setSnippet(snippet);
+                                                                    marker.setPosition(vendorcurrentlocation);
+                                                                }
+                                                                //for new markers
+                                                                else{
+                                                                    Log.i("key: "+vendorlocation.getKey(), "snippet: "+snippet);
+                                                                    Log.i("Oncreate() vegies businessname",businessname);
+                                                                    Marker marker=map.addMarker(new MarkerOptions().position(vendorcurrentlocation).title(businessname).snippet(snippet).icon(smallMarkerIcon));
+                                                                    vendormarkers.put(vendorlocation.getKey(),marker);
+                                                                }
+
                                                             }
                                                         }
                                                     }
@@ -488,6 +563,39 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
 
                                                     }
                                                 });
+
+                                                //listening to visibility changes
+                                                reference=database.getReference("vendor");
+                                                reference.addValueEventListener(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        if(snapshot.exists()){
+                                                            for(DataSnapshot vendor : snapshot.getChildren()){
+                                                                if(vendor!=null){
+                                                                    Boolean active=vendor.child("active").getValue(Boolean.class);
+                                                                    Marker marker=vendormarkers.get(vendor.getKey());
+                                                                    if(marker!=null){
+                                                                        //when inactive
+                                                                        if(active!=null && !active){
+                                                                            marker.setVisible(false);
+                                                                        }
+                                                                        //when active
+                                                                        else{
+                                                                            marker.setVisible(true);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                    }
+                                                });
+
                                             }
                                         }
                                     }
@@ -604,6 +712,7 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
                                     if(snapshot.exists()){
                                         Log.i("OnMapReady businessname",snapshot.child("username").getValue().toString());
                                         businessname=snapshot.child("businessname").getValue().toString();
+                                        active=snapshot.child("active").getValue(Boolean.class);
                                     }
                                 }
 
@@ -619,32 +728,66 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if(vendorconstraint.equals("all")){
-                                        snippet="";
-                                        for(DataSnapshot product : snapshot.getChildren()){
-                                            if(product!=null){
-                                                snippet=snippet+product.child("productnameeng").getValue().toString()+" (Price: Rs."+product.child("price").getValue().toString()+", Quantity: "+product.child("quantity").getValue().toString()+"kg)"+"\n";
+                                        if(active){
+                                            snippet="";
+                                            for(DataSnapshot product : snapshot.getChildren()){
+                                                if(product!=null){
+                                                    snippet=snippet+product.child("productnameeng").getValue().toString()+" (Price: Rs."+product.child("price").getValue().toString()+", Quantity: "+product.child("quantity").getValue().toString()+"kg)"+"\n";
+                                                }
+                                            }
+                                            //for updating existing markers
+                                            if(vendormarkers.containsKey(vendorlocation.getKey())){
+                                                Marker marker=vendormarkers.get(vendorlocation.getKey());
+                                                marker.setSnippet(snippet);
+                                                marker.setPosition(vendorcurrentlocation);
+                                            }
+                                            //for new markers
+                                            else{
+                                                Log.i("key: "+vendorlocation.getKey(), "snippet: "+snippet);
+                                                Log.i("businessname",businessname);
+                                                Marker marker=map.addMarker(new MarkerOptions().position(vendorcurrentlocation).title(businessname).snippet(snippet));
+                                                marker.setTag(vendorlocation.getKey());
+                                                int height=100;
+                                                int width=100;
+                                                Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.vendoricon);
+                                                Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+                                                BitmapDescriptor smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker);
+                                                marker.setIcon(smallMarkerIcon);
+                                                vendormarkers.put(vendorlocation.getKey(),marker);
                                             }
                                         }
-                                        //for updating existing markers
-                                        if(vendormarkers.containsKey(vendorlocation.getKey())){
-                                            Marker marker=vendormarkers.get(vendorlocation.getKey());
-                                            marker.setSnippet(snippet);
-                                            marker.setPosition(vendorcurrentlocation);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+                            //listening to visibility changes
+                            reference=database.getReference("vendor");
+                            reference.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(snapshot.exists()){
+                                        for(DataSnapshot vendor : snapshot.getChildren()){
+                                            if(vendor!=null){
+                                                Boolean active=vendor.child("active").getValue(Boolean.class);
+                                                Marker marker=vendormarkers.get(vendor.getKey());
+                                                if(marker!=null){
+                                                    //when inactive
+                                                    if(active!=null && !active){
+                                                        marker.setVisible(false);
+                                                    }
+                                                    //when active
+                                                    else{
+                                                        marker.setVisible(true);
+                                                    }
+                                                }
+                                            }
                                         }
-                                        //for new markers
-                                        else{
-                                            Log.i("key: "+vendorlocation.getKey(), "snippet: "+snippet);
-                                            Log.i("businessname",businessname);
-                                            Marker marker=map.addMarker(new MarkerOptions().position(vendorcurrentlocation).title(businessname).snippet(snippet));
-                                            marker.setTag(vendorlocation.getKey());
-                                            int height=100;
-                                            int width=100;
-                                            Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.vendoricon);
-                                            Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
-                                            BitmapDescriptor smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker);
-                                            marker.setIcon(smallMarkerIcon);
-                                            vendormarkers.put(vendorlocation.getKey(),marker);
-                                        }
+
                                     }
                                 }
 
