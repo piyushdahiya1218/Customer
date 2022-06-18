@@ -8,10 +8,22 @@
     android:orientation="vertical"
     tools:context=".Activities.HomePageActivity">
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="424dp">
+
+        <SearchView
+            android:id="@+id/mapsearchview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:queryHint="Search pickup location"
+            android:iconifiedByDefault="false"
+            android:layout_alignTop="@+id/map"
+            android:layout_alignStart="@+id/map"
+            android:layout_alignEnd="@+id/map"
+            android:layout_margin="10dp"
+            android:elevation="5dp"
+            android:background="@drawable/map_search_background"/>
 
         <fragment
             android:id="@+id/map"
@@ -93,7 +105,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/allproductsrecyclerview"
         android:layout_width="match_parent"
-        android:layout_height="259dp"
+        android:layout_height="wrap_content"
         android:clickable="true" />
 
 </LinearLayout>

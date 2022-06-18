@@ -191,7 +191,7 @@ public class ConfirmOrderActivity extends FragmentActivity implements OnMapReady
                                     LatLngBounds bounds=builder.build();
                                     int width = getResources().getDisplayMetrics().widthPixels;
                                     int height = getResources().getDisplayMetrics().heightPixels;
-                                    int padding = (int) (width * 0.10); // offset from edges of the map 10% of screen
+                                    int padding = (int) (height * 0.20); // offset from edges of the map 10% of screen
                                     CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
                                     map.animateCamera(cu);
                                 }

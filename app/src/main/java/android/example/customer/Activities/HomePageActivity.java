@@ -22,6 +22,8 @@ import android.example.customer.Classes.Product;
 import android.example.customer.R;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -33,6 +35,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -60,10 +63,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import static android.example.customer.R.id.currentlocationbuttonhomepage;
 
@@ -91,6 +96,8 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
     LinearLayout linearLayout;
     private RecyclerView recyclerView;
     ArrayList<Product> allproductslist=new ArrayList<>();
+    Boolean searchmode=false;
+    String searchedlocationstring=null;
 
 
 
@@ -114,11 +121,52 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
 
         getlocationupdates();           //this then tracks real time location
 
+        //search view of map
+        SearchView mapsearchview=findViewById(R.id.mapsearchview);
+        mapsearchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                searchmode=true;
+                searchedlocationstring=mapsearchview.getQuery().toString();
+                List<Address> searchedadresslist=null;
+                if(searchedlocationstring!=null && !searchedlocationstring.equals("")){
+                    Geocoder geocoder=new Geocoder(getApplicationContext());
+                    try {
+                        searchedadresslist=geocoder.getFromLocationName(searchedlocationstring, 1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if(searchedadresslist!=null){
+                        Address address=searchedadresslist.get(0);
+                        LatLng searchedLatlng=new LatLng(address.getLatitude(),address.getLongitude());
+                        currentlocationmarker.setPosition(searchedLatlng);
+                        currentlocationmarker.setTitle(searchedlocationstring);
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(searchedLatlng,15));
+                        setinfowindowadapter(map,searchedlocationstring);
+
+                        database = FirebaseDatabase.getInstance();
+                        reference = database.getReference("customerlocation").child(customerphonenumber);
+                        reference.child("latitude").setValue(address.getLatitude());
+                        reference.child("longitude").setValue(address.getLongitude());
+
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
         Button currentlocationbutton=findViewById(currentlocationbuttonhomepage);
         //when current location button is clicked
         currentlocationbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                searchmode=false;
+                currentlocationmarker.setTitle("My Location");
                 //will take the map to our real-time location
                 if(currentreallatlng!=null){
                     currentlocationmarker.setPosition(currentreallatlng);
@@ -627,6 +675,10 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
         setAdapter(allproductslist);
     }
 
+    private void setinfowindowadapter(GoogleMap map, String searchedlocationstring) {
+        map.setInfoWindowAdapter(new CustomInfoWindowAdapter(getApplicationContext(),map,searchedlocationstring));
+    }
+
     private void setAdapter(ArrayList<Product> list) {
         AllProductsRecyclerAdapter adapter=new AllProductsRecyclerAdapter(list);
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
@@ -678,11 +730,12 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
 //            map.setMyLocationEnabled(true);
 //        }
 
-        map.setInfoWindowAdapter(new CustomInfoWindowAdapter(getApplicationContext(),map));
+        map.setInfoWindowAdapter(new CustomInfoWindowAdapter(getApplicationContext(),map,searchedlocationstring));
+
         map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(@NonNull Marker marker) {
-                if(!marker.getTitle().equals("My Location")){
+                if(!marker.getTitle().equals("My Location") && !marker.getTitle().equals(searchedlocationstring)){
                     Log.i("marker "+marker.getTitle()+" "+marker.getTag()," clicked");
                     Intent intent=new Intent(getApplicationContext(),SelectOrderActivity.class);
                     intent.putExtra("vendorphonenumber",String.valueOf(marker.getTag()));
@@ -874,7 +927,7 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
     @Override
     public void onLocationChanged(@NonNull Location location) {
 //        Toast.makeText(this, "Location Changed", Toast.LENGTH_SHORT).show();
-        if (location != null) {
+        if (location != null && searchmode==false) {
             database = FirebaseDatabase.getInstance();
             reference = database.getReference("customerlocation");
             reference.child(customerphonenumber).setValue(location);

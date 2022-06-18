@@ -18,11 +18,13 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter{
     private final View window;
     private Context context;
     GoogleMap map;
+    String searchedlocationstring;
 
-    public CustomInfoWindowAdapter(Context context, GoogleMap map) {
+    public CustomInfoWindowAdapter(Context context, GoogleMap map, String searchedlocationstring) {
         this.context = context;
         window= LayoutInflater.from(context).inflate(R.layout.custom_info_window,null);
         this.map=map;
+        this.searchedlocationstring=searchedlocationstring;
     }
 
     private void renderWindowText(Marker marker, View view){
@@ -38,7 +40,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter{
     @Nullable
     @Override
     public View getInfoWindow(@NonNull Marker marker) {
-        if (marker.getTitle().equals("My Location")){
+        if (marker.getTitle().equals("My Location") || marker.getTitle().equals(searchedlocationstring)){
             return null;
         }
         else{
@@ -50,7 +52,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter{
     @Nullable
     @Override
     public View getInfoContents(@NonNull Marker marker) {
-        if (marker.getTitle().equals("My Location")){
+        if (marker.getTitle().equals("My Location") || marker.getTitle().equals(searchedlocationstring)){
             return null;
         }
         else{
