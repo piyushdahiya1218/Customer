@@ -8,9 +8,10 @@
     android:orientation="vertical"
     tools:context=".Activities.HomePageActivity">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="500dp">
+        android:layout_height="424dp">
 
         <fragment
             android:id="@+id/map"
@@ -31,7 +32,6 @@
             android:shadowColor="@color/black" />
 
     </RelativeLayout>
-
 
     <GridLayout
         android:id="@+id/buttonslinearlayout"
@@ -93,6 +93,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/allproductsrecyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="259dp"
+        android:clickable="true" />
 
 </LinearLayout>

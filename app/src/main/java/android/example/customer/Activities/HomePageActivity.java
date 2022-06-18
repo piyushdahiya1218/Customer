@@ -28,9 +28,11 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -302,6 +304,7 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
                     }
                 }
                 setAdapter(fruitslist);
+
 
                 //for map
                 vendorconstraint="fruits";
