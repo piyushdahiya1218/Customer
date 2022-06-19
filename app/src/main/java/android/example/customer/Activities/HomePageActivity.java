@@ -72,7 +72,7 @@ import java.util.List;
 
 import static android.example.customer.R.id.currentlocationbuttonhomepage;
 
-public class HomePageActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
+public class HomePageActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener, GoogleMap.OnMarkerDragListener {
 
     private GoogleMap map;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
@@ -98,6 +98,7 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
     ArrayList<Product> allproductslist=new ArrayList<>();
     Boolean searchmode=false;
     String searchedlocationstring=null;
+    String streetlocationstring=null;
 
 
 
@@ -730,12 +731,14 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
 //            map.setMyLocationEnabled(true);
 //        }
 
+        map.setOnMarkerDragListener(this);
+
         map.setInfoWindowAdapter(new CustomInfoWindowAdapter(getApplicationContext(),map,searchedlocationstring));
 
         map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(@NonNull Marker marker) {
-                if(!marker.getTitle().equals("My Location") && !marker.getTitle().equals(searchedlocationstring)){
+                if(!marker.getTitle().equals("My Location") && !marker.getTitle().equals(searchedlocationstring) && !marker.getTitle().equals(streetlocationstring)){
                     Log.i("marker "+marker.getTitle()+" "+marker.getTag()," clicked");
                     Intent intent=new Intent(getApplicationContext(),SelectOrderActivity.class);
                     intent.putExtra("vendorphonenumber",String.valueOf(marker.getTag()));
@@ -865,6 +868,40 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
         });
 
     }
+
+    @Override
+    public void onMarkerDragStart(@NonNull Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDrag(@NonNull Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDragEnd(@NonNull Marker marker) {
+        LatLng latLng=marker.getPosition();
+        try {
+            Geocoder geocoder=new Geocoder(getApplicationContext());
+            List<Address> addresses=geocoder.getFromLocation(latLng.latitude,latLng.longitude,1);
+            if(addresses.size()>0){
+                Address address=addresses.get(0);
+                streetlocationstring=address.getAddressLine(0);
+                currentlocationmarker.setTitle(streetlocationstring);
+
+                setinfowindowadapter(map,streetlocationstring);
+
+                database = FirebaseDatabase.getInstance();
+                reference = database.getReference("customerlocation").child(customerphonenumber);
+                reference.child("latitude").setValue(address.getLatitude());
+                reference.child("longitude").setValue(address.getLongitude());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void updatemarker(String phonenumber) {
         database = FirebaseDatabase.getInstance();
@@ -1016,7 +1053,7 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
                 if (location != null) {
 //                    Toast.makeText(this, "getting static location", Toast.LENGTH_SHORT).show();
                     currentstaticlatlng = new LatLng(location.getLatitude(), location.getLongitude());
-                    currentlocationmarkeroptions=new MarkerOptions().position(currentstaticlatlng).title("My Location");
+                    currentlocationmarkeroptions=new MarkerOptions().position(currentstaticlatlng).title("My Location").draggable(true);
                     currentlocationmarker=map.addMarker(currentlocationmarkeroptions);
                     map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentstaticlatlng, 18f));
                 }
