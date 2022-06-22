@@ -99,6 +99,8 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
     Boolean searchmode=false;
     String searchedlocationstring=null;
     String streetlocationstring=null;
+    Boolean isMarkerdragged=false;
+
 
 
 
@@ -167,6 +169,7 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
             @Override
             public void onClick(View v) {
                 searchmode=false;
+                isMarkerdragged=false;
                 currentlocationmarker.setTitle("My Location");
                 //will take the map to our real-time location
                 if(currentreallatlng!=null){
@@ -954,6 +957,8 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
             Geocoder geocoder=new Geocoder(getApplicationContext());
             List<Address> addresses=geocoder.getFromLocation(latLng.latitude,latLng.longitude,1);
             if(addresses.size()>0){
+                isMarkerdragged=true;
+
                 Address address=addresses.get(0);
                 streetlocationstring=address.getAddressLine(0);
                 currentlocationmarker.setTitle(streetlocationstring);
@@ -1032,7 +1037,7 @@ public class HomePageActivity extends FragmentActivity implements OnMapReadyCall
     @Override
     public void onLocationChanged(@NonNull Location location) {
 //        Toast.makeText(this, "Location Changed", Toast.LENGTH_SHORT).show();
-        if (location != null && searchmode==false) {
+        if (location!=null && searchmode==false && isMarkerdragged==false) {
             database = FirebaseDatabase.getInstance();
             reference = database.getReference("customerlocation");
             reference.child(customerphonenumber).setValue(location);
