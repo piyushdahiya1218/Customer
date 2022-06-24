@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.example.customer.Adapters.ConfirmOrderRecyclerAdapter;
+
 import android.example.customer.Adapters.OrderAcceptedRecyclerAdapter;
+
 import android.example.customer.Classes.CustomerCart;
 import android.example.customer.Classes.Product;
 import android.example.customer.R;
@@ -48,6 +50,7 @@ public class OrderAccepted extends FragmentActivity implements OnMapReadyCallbac
     Marker vendormarker;
     CustomerCart customerCart;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +67,11 @@ public class OrderAccepted extends FragmentActivity implements OnMapReadyCallbac
 
         recyclerView=findViewById(R.id.orderacceptedrecyclerview);
 
+
         database= FirebaseDatabase.getInstance();
+
+        database=FirebaseDatabase.getInstance();
+
         reference=database.getReference("customercart").child(customerphonenumber);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -81,6 +88,7 @@ public class OrderAccepted extends FragmentActivity implements OnMapReadyCallbac
             }
         });
 
+
     }
 
     private void setAdapter(ArrayList<Product> cartproductslist) {
@@ -90,6 +98,16 @@ public class OrderAccepted extends FragmentActivity implements OnMapReadyCallbac
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
     }
+
+
+
+//    private void setAdapter(ArrayList<Product> cartproductslist) {
+//        ConfirmOrderRecyclerAdapter adapter=new ConfirmOrderRecyclerAdapter(cartproductslist);
+//        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
+//        recyclerView.setLayoutManager(layoutManager);
+//        recyclerView.setItemAnimator(new DefaultItemAnimator());
+//        recyclerView.setAdapter(adapter);
+//    }
 
     @Override
     public void onMapReady(@NonNull GoogleMap map) {

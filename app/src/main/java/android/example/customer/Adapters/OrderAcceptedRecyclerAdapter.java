@@ -38,11 +38,13 @@ public class OrderAcceptedRecyclerAdapter extends RecyclerView.Adapter<OrderAcce
         }
     }
 
+
     @NonNull
     @Override
     public OrderAcceptedRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemview= LayoutInflater.from(parent.getContext()).inflate(R.layout.order_accepted_list_items,parent,false);
         return new OrderAcceptedRecyclerAdapter.MyViewHolder(itemview);
+
     }
 
     @Override

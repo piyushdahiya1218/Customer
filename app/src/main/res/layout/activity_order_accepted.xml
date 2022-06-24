@@ -8,8 +8,12 @@
     tools:context=".Activities.OrderAccepted">
 
     <RelativeLayout
+
     android:layout_width="match_parent"
     android:layout_height="200dp">
+
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
 
         <fragment
             android:id="@+id/map"
