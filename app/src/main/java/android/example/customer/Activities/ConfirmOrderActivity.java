@@ -3,6 +3,7 @@ package android.example.customer.Activities;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -138,6 +139,9 @@ public class ConfirmOrderActivity extends FragmentActivity implements OnMapReady
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                ((LinearLayoutManager) layoutManager).getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
     @Override

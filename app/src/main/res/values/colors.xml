@@ -10,4 +10,7 @@
     <color name="green">#ff3b8155</color>
     <color name="lightGreen">#ff00FFAB</color>
     <color name="bgBlue">#ff191F2E</color>
+    <color name="green_theme">#50C87B</color>
+
+
 </resources>

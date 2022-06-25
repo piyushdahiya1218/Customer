@@ -16,14 +16,14 @@
             android:id="@+id/mapsearchview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:queryHint="Search pickup location"
-            android:iconifiedByDefault="false"
-            android:layout_alignTop="@+id/map"
             android:layout_alignStart="@+id/map"
+            android:layout_alignTop="@+id/map"
             android:layout_alignEnd="@+id/map"
             android:layout_margin="10dp"
+            android:background="@drawable/map_search_background"
             android:elevation="5dp"
-            android:background="@drawable/map_search_background"/>
+            android:iconifiedByDefault="false"
+            android:queryHint="Search pickup location" />
 
         <fragment
             android:id="@+id/map"

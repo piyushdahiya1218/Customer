@@ -35,24 +35,35 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Your Order"
-        android:textSize="25sp"
+        android:background="@color/green_theme"
         android:gravity="center_horizontal"
-        android:layout_marginTop="10dp"/>
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="Your Order"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/confirmorderrecyclerview"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_marginTop="20dp"/>
+        android:paddingTop="8dp" />
 
     <Button
         android:id="@+id/confirmorderbutton"
-        android:layout_width="wrap_content"
+        android:layout_width="371dp"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
-        android:text="Order"/>
+        android:backgroundTint="@color/purple_500"
+        android:gravity="center"
+        android:text="Order"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 
 </LinearLayout>
