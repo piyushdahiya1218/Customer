@@ -1,5 +1,13 @@
 # Customer
-(This Customer app is part of the project. Have a look at the Vendor app here - https://github.com/piyushdahiya1218/Vendor)
+*This Customer app is part of the project. Have a look at the Vendor app here - https://github.com/piyushdahiya1218/Vendor*
+
+### Tech stack used :
+<div>
+<img src="https://github.com/devicons/devicon/blob/master/icons/java/java-original-wordmark.svg" title="Java" alt="Java" width="60" height="60"/>&nbsp;
+<img src="https://cdn.iconscout.com/icon/free/png-256/free-xml-file-2330558-1950399.png" title="Java" alt="Java" width="60" height="60"/>&nbsp;
+<img src="https://github.com/devicons/devicon/blob/master/icons/firebase/firebase-plain-wordmark.svg" title="Java" alt="Java" width="60" height="60"/>&nbsp;
+</div>
+<br/>  <br/>
 
 This app is targeted for users who don't want to step out of their home everytime they need fruits and vegetables but still want to support local street vendors instead of ordering groceries from Instamart or Dunzo!
 
